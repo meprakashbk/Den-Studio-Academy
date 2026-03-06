@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Den Studios Academy — Master the Art of Audio Production</title>
+  <meta name="description" content="Learn audio production, mixing & mastering from industry professionals. 13-week online course. Enroll now at Den Studios Academy." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== RESET & VARIABLES ===== */
+    :root {
+      --black: #080808; --deep: #0d0d0d; --card: #111111;
+      --border: rgba(255,255,255,0.07); --gold: #c8a04a;
+      --gold-light: #e8c06a; --gold-dim: rgba(200,160,74,0.15);
+      --white: #f5f0e8; --gray: #888880;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; cursor: none; }
+    @media (hover: none) { body { cursor: auto; } }
+
+    /* ===== CURSOR ===== */
+    .cursor, .cursor-ring { display: none; }
+    @media (hover: hover) and (pointer: fine) {
+      .cursor { display: block; position: fixed; width: 10px; height: 10px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .2s, height .2s; mix-blend-mode: difference; }
+      .cursor-ring { display: block; position: fixed; width: 36px; height: 36px; border: 1px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: width .3s, height .3s, opacity .3s; opacity: .5; }
+    }
+
+    /* ===== NOISE ===== */
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: .4; }
+
+    /* ===== NAV ===== */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; display: flex; align-items: center; justify-content: space-between; padding: 22px 48px; background: linear-gradient(to bottom, rgba(8,8,8,.97) 0%, transparent 100%); transition: all .4s; }
+    nav.scrolled { background: rgba(8,8,8,.96); backdrop-filter: blur(20px); padding: 14px 48px; border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 3px; color: var(--white); text-decoration: none; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .nav-logo span { color: var(--gold); }
+    .logo-icon { width: 30px; height: 30px; background: var(--gold); border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .logo-icon svg { width: 16px; height: 16px; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: var(--gray); text-decoration: none; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; transition: color .2s; font-family: 'DM Mono', monospace; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta { background: var(--gold) !important; color: var(--black) !important; padding: 9px 22px !important; border-radius: 2px; font-weight: 500 !important; }
+    .nav-cta:hover { background: var(--gold-light) !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; background: none; border: none; }
+    .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--white); transition: all .3s; }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+    .mobile-menu { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(8,8,8,.98); backdrop-filter: blur(20px); z-index: 490; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; transform: translateX(100%); transition: transform .4s cubic-bezier(.4,0,.2,1); }
+    .mobile-menu.open { transform: translateX(0); }
+    .mobile-menu a { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 3px; color: var(--gray); text-decoration: none; transition: color .2s; padding: 8px 0; }
+    .mobile-menu a:hover { color: var(--gold); }
+    .mobile-menu .m-cta { margin-top: 16px; background: var(--gold); color: var(--black) !important; font-size: 18px !important; padding: 16px 48px; border-radius: 2px; }
+
+    /* ===== BUTTONS ===== */
+    .btn-primary { background: var(--gold); color: var(--black); font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 16px 36px; border-radius: 2px; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 10px; transition: all .25s; border: none; cursor: pointer; }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 12px 36px rgba(200,160,74,.3); }
+    .btn-primary svg { width: 14px; height: 14px; }
+    .btn-ghost { background: transparent; color: var(--white); font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 15px 32px; border-radius: 2px; text-decoration: none; border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 10px; transition: all .25s; }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ===== SHARED ===== */
+    section { position: relative; }
+    .section-inner { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+    .section-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+    .section-tag::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+    .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 5.5vw, 76px); line-height: 1; letter-spacing: .5px; color: var(--white); margin-bottom: 20px; }
+
+    /* ===== REVEAL (sections below hero only) ===== */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+    .reveal-delay-5 { transition-delay: .5s; }
+
+    /* ===== HERO =====
+       Structure:
+         .hero (flex column, full viewport height)
+           .hero-top   → nav-height padding + "Online Audio Education" tag
+           .hero-bottom → flex:1 + justify flex-end → big title, sub, buttons, stats
+    */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; padding: 0 48px 80px; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 70% 40%, rgba(200,160,74,.08) 0%, transparent 70%), radial-gradient(ellipse 40% 60% at 20% 80%, rgba(212,74,42,.06) 0%, transparent 60%), linear-gradient(180deg, #0a0a0a 0%, #080808 100%); }
+    .hero-waveform { position: absolute; top: 50%; right: -80px; transform: translateY(-50%); width: 52%; opacity: .1; pointer-events: none; }
+
+    .hero-top { position: relative; z-index: 2; padding-top: 92px; }
+    .hero-tag { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 12px; }
+    .hero-tag::before { content: ''; display: block; width: 40px; height: 1px; background: var(--gold); }
+
+    .hero-bottom { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; justify-content: flex-end; }
+    .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(64px, 10.5vw, 152px); line-height: .9; letter-spacing: -1px; color: var(--white); }
+    .hero h1 .stroke { -webkit-text-stroke: 1px rgba(245,240,232,.22); color: transparent; }
+    .hero h1 .gold { color: var(--gold); }
+    .hero-sub { margin-top: 28px; font-size: clamp(14px, 2vw, 17px); line-height: 1.75; color: var(--gray); max-width: 460px; }
+    .hero-actions { margin-top: 40px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .hero-stats { margin-top: 64px; display: flex; gap: 36px; border-top: 1px solid var(--border); padding-top: 32px; flex-wrap: wrap; }
+    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 4vw, 44px); color: var(--gold); line-height: 1; }
+    .stat-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); margin-top: 4px; }
+
+    /* ===== TICKER ===== */
+    .ticker-wrap { overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--deep); padding: 14px 0; }
+    .ticker { display: flex; white-space: nowrap; animation: ticker 28s linear infinite; }
+    .ticker-item { display: flex; align-items: center; gap: 18px; padding: 0 28px; font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 2px; color: var(--gray); }
+    .ticker-item .dot { width: 4px; height: 4px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ===== COURSE ===== */
+    .course-section { padding: 108px 0; background: var(--deep); }
+    .course-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; margin-top: 56px; }
+    .course-card { background: var(--card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+    .course-card-header { background: linear-gradient(135deg, #1a1a1a, #111); padding: 36px; border-bottom: 1px solid var(--border); position: relative; }
+    .course-badge { position: absolute; top: 18px; right: 18px; background: var(--gold); color: var(--black); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 5px 12px; border-radius: 2px; font-weight: 500; }
+    .course-card-title { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 1px; color: var(--white); margin-bottom: 6px; }
+    .course-card-sub { font-size: 12px; color: var(--gray); font-family: 'DM Mono', monospace; letter-spacing: 1px; }
+    .course-card-body { padding: 28px 36px; }
+    .module-list { list-style: none; }
+    .module-item { display: flex; align-items: flex-start; gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--border); }
+    .module-item:last-child { border-bottom: none; }
+    .module-num { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 1px; min-width: 24px; padding-top: 2px; }
+    .module-text { font-size: 14px; color: var(--white); line-height: 1.5; }
+    .module-text small { display: block; color: var(--gray); font-size: 12px; margin-top: 2px; }
+    .course-details { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+    .detail-box { background: var(--card); border: 1px solid var(--border); padding: 18px; border-radius: 2px; }
+    .detail-box .d-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--gray); text-transform: uppercase; margin-bottom: 5px; }
+    .detail-box .d-val { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); }
+    .outcomes-list { list-style: none; margin-top: 24px; }
+    .outcomes-list li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; font-size: 15px; color: rgba(245,240,232,.82); border-bottom: 1px solid var(--border); line-height: 1.6; }
+    .outcomes-list li:last-child { border-bottom: none; }
+    .outcomes-list li::before { content: '→'; color: var(--gold); font-size: 14px; min-width: 18px; margin-top: 2px; }
+
+    /* ===== INSTRUCTORS ===== */
+    .instructors-section { padding: 108px 0; background: var(--black); }
+    .instructors-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-top: 52px; }
+    .instructor-card { background: var(--card); border: 1px solid var(--border); padding: 36px 28px; transition: background .3s; position: relative; overflow: hidden; }
+    .instructor-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transition: transform .3s; }
+    .instructor-card:hover { background: #141414; }
+    .instructor-card:hover::after { transform: scaleX(1); }
+    .instructor-avatar { width: 64px; height: 64px; border-radius: 50%; background: var(--gold-dim); border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--gold); margin-bottom: 18px; }
+    .instructor-name { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px; color: var(--white); margin-bottom: 4px; }
+    .instructor-role { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px; color: var(--gold); text-transform: uppercase; margin-bottom: 14px; }
+    .instructor-bio { font-size: 13px; color: var(--gray); line-height: 1.75; }
+    .instructor-stat { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border); font-family: 'DM Mono', monospace; font-size: 12px; color: var(--white); }
+    .instructor-stat span { color: var(--gold); }
+
+    /* ===== WHY ===== */
+    .why-section { padding: 108px 0; background: var(--deep); }
+    .why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-top: 52px; }
+    .why-card { background: var(--card); padding: 36px 28px; border: 1px solid var(--border); transition: background .3s; }
+    .why-card:hover { background: #141414; }
+    .why-icon { width: 44px; height: 44px; background: var(--gold-dim); border: 1px solid rgba(200,160,74,.3); border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .why-icon svg { width: 20px; height: 20px; stroke: var(--gold); fill: none; }
+    .why-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1px; color: var(--white); margin-bottom: 10px; }
+    .why-card p { font-size: 13px; color: var(--gray); line-height: 1.8; }
+
+    /* ===== WAVE ===== */
+    .wave-divider { padding: 48px 0; overflow: hidden; background: var(--black); }
+    .wave-bars { display: flex; align-items: center; justify-content: center; gap: 3px; height: 68px; }
+    .wave-bar { width: 3px; background: var(--gold); border-radius: 2px; animation: wave-anim 1.2s ease-in-out infinite; opacity: .5; }
+    @keyframes wave-anim { 0%,100% { transform: scaleY(.15); } 50% { transform: scaleY(1); } }
+
+    /* ===== TESTIMONIALS ===== */
+    .testimonials-section { padding: 108px 0; background: var(--black); }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-top: 52px; }
+    .testimonial-card { background: var(--card); border: 1px solid var(--border); padding: 32px 28px; }
+    .t-quote { font-family: 'Bebas Neue', sans-serif; font-size: 56px; color: var(--gold); line-height: .8; margin-bottom: 16px; opacity: .35; }
+    .t-text { font-size: 14px; color: rgba(245,240,232,.8); line-height: 1.85; font-style: italic; margin-bottom: 20px; }
+    .t-author { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; }
+    .t-stars { display: flex; gap: 3px; margin-bottom: 14px; }
+    .t-stars span { color: var(--gold); font-size: 13px; }
+
+    /* ===== ENROLL CTA ===== */
+    .enroll-section { padding: 128px 0; background: var(--deep); overflow: hidden; position: relative; }
+    .enroll-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 50% 80% at 50% 50%, rgba(200,160,74,.06) 0%, transparent 70%); }
+    .enroll-inner { text-align: center; position: relative; }
+    .enroll-inner .section-tag { justify-content: center; }
+    .enroll-inner .section-tag::before, .enroll-inner .section-tag::after { content: ''; width: 28px; height: 1px; background: var(--gold); }
+    .price-block { display: inline-flex; flex-direction: column; align-items: center; background: var(--card); border: 1px solid rgba(200,160,74,.3); padding: 52px 64px; border-radius: 4px; margin-top: 44px; position: relative; max-width: 100%; }
+    .price-block::before { content: 'ENROLLING NOW'; position: absolute; top: -11px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--black); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; padding: 4px 16px; border-radius: 2px; font-weight: 500; white-space: nowrap; }
+    .price-duration { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--gray); text-transform: uppercase; margin-bottom: 12px; }
+    .price-main { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 6vw, 56px); line-height: 1; color: var(--white); }
+    .price-features { list-style: none; margin: 24px 0; text-align: left; width: 100%; }
+    .price-features li { display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: rgba(245,240,232,.75); border-bottom: 1px solid var(--border); }
+    .price-features li:last-child { border-bottom: none; }
+    .price-features .check { color: var(--gold); }
+    .enroll-note { margin-top: 20px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; color: var(--gray); }
+
+    /* ===== FOOTER ===== */
+    footer { background: #060606; border-top: 1px solid var(--border); padding: 72px 0 36px; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 52px; padding-bottom: 52px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+    .footer-brand p { font-size: 13px; color: var(--gray); line-height: 1.8; margin-top: 14px; max-width: 270px; }
+    .footer-col h4 { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 10px; }
+    .footer-col a { font-size: 13px; color: var(--gray); text-decoration: none; transition: color .2s; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-social { display: flex; gap: 10px; margin-top: 20px; }
+    .social-btn { width: 38px; height: 38px; background: var(--card); border: 1px solid var(--border); border-radius: 2px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: var(--gray); font-size: 12px; font-family: 'DM Mono', monospace; transition: all .2s; }
+    .social-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-bottom p { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray); letter-spacing: 1px; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      nav { padding: 20px 32px; }
+      nav.scrolled { padding: 14px 32px; }
+      .section-inner { padding: 0 32px; }
+      .footer-inner { padding: 0 32px; }
+      .hero { padding: 0 32px 72px; }
+      .hero-top { padding-top: 86px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+      .course-grid { gap: 48px; }
+    }
+    @media (max-width: 900px) {
+      .instructors-grid, .why-grid, .testimonials-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      nav.scrolled { padding: 12px 20px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .section-inner { padding: 0 20px; }
+      .footer-inner { padding: 0 20px; }
+      .hero { padding: 0 20px 56px; }
+      .hero-top { padding-top: 76px; }
+      .hero-waveform { opacity: .05; width: 90%; right: -20%; }
+      .course-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+      .footer-brand p { max-width: 100%; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+      .price-block { padding: 40px 24px; }
+      .hero-stats { gap: 24px; }
+      .course-section, .instructors-section, .why-section, .testimonials-section, .enroll-section { padding: 80px 0; }
+    }
+    @media (max-width: 480px) {
+      nav { padding: 14px 16px; }
+      .section-inner { padding: 0 16px; }
+      .footer-inner { padding: 0 16px; }
+      .hero { padding: 0 16px 48px; }
+      .hero-top { padding-top: 68px; }
+      .hero-actions { flex-direction: column; align-items: flex-start; }
+      .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
+      .hero-stats { gap: 16px; }
+      .price-block { padding: 36px 16px; }
+      .course-section, .instructors-section, .why-section, .testimonials-section, .enroll-section { padding: 64px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#course">Course</a>
+    <a href="#instructors">Instructors</a>
+    <a href="#why">Why Us</a>
+    <a href="contact.html">Contact</a>
+    <a href="enroll.html" class="m-cta">Enroll Now</a>
+  </div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="8" width="3" height="8" rx="1" fill="#080808"/><rect x="7" y="4" width="3" height="16" rx="1" fill="#080808"/><rect x="12" y="6" width="3" height="12" rx="1" fill="#080808"/><rect x="17" y="10" width="3" height="6" rx="1" fill="#080808"/></svg>
+      </div>
+      Den <span>Studios</span> Academy
+    </a>
+    <ul class="nav-links">
+      <li><a href="#course">Course</a></li>
+      <li><a href="#instructors">Instructors</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="enroll.html" class="nav-cta">Enroll Now</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <svg class="hero-waveform" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g fill="none" stroke="#c8a04a" stroke-width="1.5">
+        <path d="M0,200 Q20,80 40,200 Q60,320 80,200 Q100,80 120,200 Q140,320 160,200 Q180,80 200,200 Q220,320 240,200 Q260,80 280,200 Q300,320 320,200 Q340,80 360,200 Q380,320 400,200 Q420,80 440,200 Q460,320 480,200 Q500,80 520,200 Q540,320 560,200 Q580,80 600,200 Q620,320 640,200 Q660,80 680,200 Q700,320 720,200 Q740,80 760,200 Q780,320 800,200"/>
+        <path d="M0,200 Q30,120 60,200 Q90,280 120,200 Q150,120 180,200 Q210,280 240,200 Q270,120 300,200 Q330,280 360,200 Q390,120 420,200 Q450,280 480,200 Q510,120 540,200 Q570,280 600,200 Q630,120 660,200 Q690,280 720,200 Q750,120 780,200" opacity="0.4"/>
+      </g>
+    </svg>
+
+    <!-- "Online Audio Education" — directly below the nav, left-aligned with logo -->
+    <div class="hero-top">
+      <div class="hero-tag" id="heroTag">Online Audio Education</div>
+    </div>
+
+    <!-- Big headline + content anchored to bottom of hero -->
+    <div class="hero-bottom">
+      <h1 id="heroH1">
+        Master<br/>
+        <span class="stroke">the Art</span><br/>
+        of <span class="gold">Sound</span>
+      </h1>
+      <p class="hero-sub" id="heroSub">Learn recording, music production, drum programming, mixing & mastering from industry professionals in a structured 13-week online program.</p>
+      <div class="hero-actions" id="heroActions">
+        <a href="enroll.html" class="btn-primary">Enroll Now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="#course" class="btn-ghost">Explore Course</a>
+      </div>
+      <div class="hero-stats" id="heroStats">
+        <div class="stat-item"><div class="stat-num">13</div><div class="stat-label">Weeks Online</div></div>
+        <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Expert Instructors</div></div>
+        <div class="stat-item"><div class="stat-num">300+</div><div class="stat-label">Commercial Releases</div></div>
+        <div class="stat-item"><div class="stat-num">10+</div><div class="stat-label">Years Experience</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap" aria-hidden="true">
+    <div class="ticker">
+      <div class="ticker-item"><span class="dot"></span>Audio Production</div>
+      <div class="ticker-item"><span class="dot"></span>Music Production</div>
+      <div class="ticker-item"><span class="dot"></span>Drum Programming</div>
+      <div class="ticker-item"><span class="dot"></span>Mixing & Mastering</div>
+      <div class="ticker-item"><span class="dot"></span>Recording Techniques</div>
+      <div class="ticker-item"><span class="dot"></span>Sound Design</div>
+      <div class="ticker-item"><span class="dot"></span>DAW Signal Flow</div>
+      <div class="ticker-item"><span class="dot"></span>Streaming Platforms</div>
+      <div class="ticker-item"><span class="dot"></span>Audio Production</div>
+      <div class="ticker-item"><span class="dot"></span>Music Production</div>
+      <div class="ticker-item"><span class="dot"></span>Drum Programming</div>
+      <div class="ticker-item"><span class="dot"></span>Mixing & Mastering</div>
+      <div class="ticker-item"><span class="dot"></span>Recording Techniques</div>
+      <div class="ticker-item"><span class="dot"></span>Sound Design</div>
+      <div class="ticker-item"><span class="dot"></span>DAW Signal Flow</div>
+      <div class="ticker-item"><span class="dot"></span>Streaming Platforms</div>
+    </div>
+  </div>
+
+  <!-- COURSE -->
+  <section class="course-section" id="course">
+    <div class="section-inner">
+      <div class="section-tag reveal">Our Program</div>
+      <h2 class="section-title reveal reveal-delay-1">The Complete<br/>Audio Production Course</h2>
+      <div class="course-grid">
+        <div class="reveal reveal-delay-2">
+          <div class="course-card">
+            <div class="course-card-header">
+              <div class="course-badge">Enrolling Now</div>
+              <div class="course-card-title">Audio Production</div>
+              <div class="course-card-sub">13 Weeks · Online · Live + Recorded</div>
+            </div>
+            <div class="course-card-body">
+              <ul class="module-list">
+                <li class="module-item"><span class="module-num">01</span><div class="module-text">Music Production<small>Sound design, arrangement & digital audio theory</small></div></li>
+                <li class="module-item"><span class="module-num">02</span><div class="module-text">Drum Programming<small>Multi-genre grooves & programming techniques</small></div></li>
+                <li class="module-item"><span class="module-num">03</span><div class="module-text">Recording<small>Vocals, live instruments & mic techniques</small></div></li>
+                <li class="module-item"><span class="module-num">04</span><div class="module-text">Mixing & Mastering<small>Clarity, balance, purpose & streaming prep</small></div></li>
+                <li class="module-item"><span class="module-num">05</span><div class="module-text">Studio Workflow<small>Real-world DAW signal flow & professional practices</small></div></li>
+              </ul>
+            </div>
+          </div>
+          <div class="course-details">
+            <div class="detail-box"><div class="d-label">Duration</div><div class="d-val">13 Weeks</div></div>
+            <div class="detail-box"><div class="d-label">Format</div><div class="d-val">Online</div></div>
+            <div class="detail-box"><div class="d-label">Classes</div><div class="d-val">Live + VOD</div></div>
+            <div class="detail-box"><div class="d-label">Projects</div><div class="d-val">Practical</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="section-tag reveal">What You'll Learn</div>
+          <ul class="outcomes-list">
+            <li class="reveal reveal-delay-1">Record vocals and live instruments using professional mic techniques</li>
+            <li class="reveal reveal-delay-2">Design and shape sounds using virtual instruments and effects</li>
+            <li class="reveal reveal-delay-3">Program drums for multiple genres and musical styles</li>
+            <li class="reveal reveal-delay-4">Arrange songs with clear structure and musical direction</li>
+            <li class="reveal reveal-delay-5">Mix and master tracks with clarity, balance, and purpose</li>
+            <li class="reveal">Prepare final audio for Spotify, Apple Music & streaming platforms</li>
+            <li class="reveal reveal-delay-1">Understand DAW signal flow and studio-grade workflow</li>
+          </ul>
+          <div style="margin-top:36px;" class="reveal reveal-delay-2">
+            <a href="enroll.html" class="btn-primary">Start Learning Today <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAVE DIVIDER -->
+  <div class="wave-divider" aria-hidden="true"><div class="wave-bars" id="waveBars"></div></div>
+
+  <!-- INSTRUCTORS -->
+  <section class="instructors-section" id="instructors">
+    <div class="section-inner">
+      <div class="section-tag reveal">Meet the Team</div>
+      <h2 class="section-title reveal reveal-delay-1">Learn From<br/>The Best</h2>
+      <div class="instructors-grid">
+        <div class="instructor-card reveal reveal-delay-1">
+          <div class="instructor-avatar">DG</div>
+          <div class="instructor-name">Daniel Gadal</div>
+          <div class="instructor-role">Sound Designer & Producer</div>
+          <p class="instructor-bio">A creative force in modern music production with a decade of experience crafting sounds for top artists. Specializes in sound design, musical arrangement, and the full production pipeline.</p>
+          <div class="instructor-stat"><span>10+</span> years producing for top artists</div>
+        </div>
+        <div class="instructor-card reveal reveal-delay-2">
+          <div class="instructor-avatar">RC</div>
+          <div class="instructor-name">Robin Chettri</div>
+          <div class="instructor-role">Mixing & Mastering Engineer</div>
+          <p class="instructor-bio">One of the most prolific mastering engineers in the program, having worked on over 300 commercial releases. Brings precision and real-world studio standards to every session.</p>
+          <div class="instructor-stat"><span>300+</span> commercial releases mastered</div>
+        </div>
+        <div class="instructor-card reveal reveal-delay-3">
+          <div class="instructor-avatar">SG</div>
+          <div class="instructor-name">Sumy Gadal</div>
+          <div class="instructor-role">Drum Programming Specialist</div>
+          <p class="instructor-bio">A drummer turned producer who bridges organic feel and programmed precision. Covers hip-hop, electronic, and live-feel acoustic programming across genres.</p>
+          <div class="instructor-stat">Drummer <span>&</span> Producer</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="why-section" id="why">
+    <div class="section-inner">
+      <div class="section-tag reveal">Why Den Studios</div>
+      <h2 class="section-title reveal reveal-delay-1">Designed for<br/>Real Results</h2>
+      <div class="why-grid">
+        <div class="why-card reveal reveal-delay-1"><div class="why-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M9 19V6l12-3v13M9 19c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm12-3c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2z"/></svg></div><h3>Industry-Relevant Curriculum</h3><p>Every module reflects real studio practices used in professional productions today — not outdated theory.</p></div>
+        <div class="why-card reveal reveal-delay-2"><div class="why-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><h3>Live Classes + Recordings</h3><p>Join live sessions and never miss a lesson. All classes are recorded so you can revisit any material.</p></div>
+        <div class="why-card reveal reveal-delay-3"><div class="why-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Project-Based Learning</h3><p>Learn by making real music. Every concept is applied through hands-on projects as you build a portfolio.</p></div>
+        <div class="why-card reveal reveal-delay-1"><div class="why-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h3>Personal Instructor Attention</h3><p>Work closely with your instructors in an intimate setting with feedback tailored to your goals.</p></div>
+        <div class="why-card reveal reveal-delay-2"><div class="why-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><h3>Focused Single Program</h3><p>One complete, integrated audio production program — not a scattered library of random lessons. Everything connects.</p></div>
+        <div class="why-card reveal reveal-delay-3"><div class="why-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div><h3>Streaming-Ready Output</h3><p>Graduate knowing how to deliver professionally mastered, platform-ready tracks — just like the pros.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials-section" id="testimonials">
+    <div class="section-inner">
+      <div class="section-tag reveal">Student Experiences</div>
+      <h2 class="section-title reveal reveal-delay-1">What Students Say</h2>
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal reveal-delay-1"><div class="t-quote">"</div><div class="t-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div><p class="t-text">Before this course I had no idea how to structure a proper mix. The instructors are incredibly patient and the curriculum actually prepares you for a real studio environment.</p><div class="t-author">— Music Producer, Mumbai</div></div>
+        <div class="testimonial-card reveal reveal-delay-2"><div class="t-quote">"</div><div class="t-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div><p class="t-text">The drum programming module alone was worth it. Sumy's teaching style breaks it down in a way that makes sense whether you're a drummer or never touched a kit in your life.</p><div class="t-author">— Beatmaker, Kolkata</div></div>
+        <div class="testimonial-card reveal reveal-delay-3"><div class="t-quote">"</div><div class="t-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div><p class="t-text">Robin's mastering lessons changed how I hear music entirely. I'm now getting placements on Spotify playlists. This course gave me the skills to compete professionally.</p><div class="t-author">— Independent Artist, Delhi</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENROLL CTA -->
+  <section class="enroll-section" id="enroll">
+    <div class="enroll-bg"></div>
+    <div class="section-inner">
+      <div class="enroll-inner">
+        <div class="section-tag reveal">Ready to Start?</div>
+        <h2 class="section-title reveal reveal-delay-1">Start Your Audio<br/>Production Journey</h2>
+        <p style="color:var(--gray);max-width:460px;margin:0 auto;font-size:15px;line-height:1.8;" class="reveal reveal-delay-2">A structured, practical, 13-week program that takes you from beginner to production-ready.</p>
+        <div class="price-block reveal reveal-delay-3">
+          <div class="price-duration">13-Week Full Program</div>
+          <div class="price-main">Contact for Pricing</div>
+          <ul class="price-features">
+            <li><span class="check">✓</span>Full 13-week audio production course</li>
+            <li><span class="check">✓</span>Live online classes with recordings</li>
+            <li><span class="check">✓</span>Music production, drums, mixing & mastering</li>
+            <li><span class="check">✓</span>Project-based curriculum</li>
+            <li><span class="check">✓</span>3 expert instructors</li>
+            <li><span class="check">✓</span>Streaming-ready output training</li>
+          </ul>
+          <a href="enroll.html" class="btn-primary" style="width:100%;justify-content:center;margin-top:8px;">Apply to Enroll <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <p class="enroll-note">Questions? WhatsApp: +91 90025 63292</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="8" width="3" height="8" rx="1" fill="#080808"/><rect x="7" y="4" width="3" height="16" rx="1" fill="#080808"/><rect x="12" y="6" width="3" height="12" rx="1" fill="#080808"/><rect x="17" y="10" width="3" height="6" rx="1" fill="#080808"/></svg></div>
+            Den <span>Studios</span> Academy
+          </a>
+          <p>Empowering musicians and producers to master their craft through world-class online education.</p>
+          <div class="footer-social">
+            <a href="https://www.facebook.com/p/Den-Studios-Academy-61558597305356/" class="social-btn" target="_blank">f</a>
+            <a href="https://www.instagram.com/denmusicstudios/" class="social-btn" target="_blank">ig</a>
+            <a href="https://wa.me/919002563292" class="social-btn" target="_blank">wa</a>
+            <a href="mailto:denstudiosacademy@gmail.com" class="social-btn">@</a>
+          </div>
+        </div>
+        <div class="footer-col"><h4>Course</h4><ul><li><a href="#course">Audio Production</a></li><li><a href="#course">Music Production</a></li><li><a href="#course">Drum Programming</a></li><li><a href="#course">Mixing & Mastering</a></li></ul></div>
+        <div class="footer-col"><h4>Academy</h4><ul><li><a href="#instructors">Instructors</a></li><li><a href="#why">About Us</a></li><li><a href="#testimonials">Student Stories</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+        <div class="footer-col"><h4>Enroll</h4><ul><li><a href="enroll.html">Apply Now</a></li><li><a href="mailto:denstudiosacademy@gmail.com">Email Us</a></li><li><a href="https://wa.me/919002563292">WhatsApp</a></li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Den Studios Academy. All rights reserved.</p>
+        <p>Built for real musicians.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // CURSOR
+    const cursor = document.getElementById('cursor'), ring = document.getElementById('cursorRing');
+    if (cursor && ring) {
+      let mx=0,my=0,rx=0,ry=0;
+      document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
+      (function loop(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
+      document.querySelectorAll('a,button').forEach(el => {
+        el.addEventListener('mouseenter', ()=>{ cursor.style.width='20px'; cursor.style.height='20px'; ring.style.width='56px'; ring.style.height='56px'; ring.style.opacity='.8'; });
+        el.addEventListener('mouseleave', ()=>{ cursor.style.width='10px'; cursor.style.height='10px'; ring.style.width='36px'; ring.style.height='36px'; ring.style.opacity='.5'; });
+      });
+    }
+
+    // NAV SCROLL
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', scrollY > 60));
+
+    // HAMBURGER
+    const ham = document.getElementById('hamburger'), mob = document.getElementById('mobileMenu');
+    ham.addEventListener('click', ()=>{ ham.classList.toggle('open'); mob.classList.toggle('open'); document.body.style.overflow = mob.classList.contains('open') ? 'hidden' : ''; });
+    mob.querySelectorAll('a').forEach(a => a.addEventListener('click', ()=>{ ham.classList.remove('open'); mob.classList.remove('open'); document.body.style.overflow=''; }));
+
+    // HERO ANIMATIONS — triggered directly on load (no IntersectionObserver needed for hero)
+    window.addEventListener('load', () => {
+      ['heroTag','heroH1','heroSub','heroActions','heroStats'].forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.style.cssText += 'opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;transition-delay:' + (i*.13) + 's';
+        setTimeout(() => { el.style.opacity='1'; el.style.transform='translateY(0)'; }, 60);
+      });
+    });
+
+    // SCROLL REVEAL — for all sections below hero
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    // WAVE BARS
+    const wb = document.getElementById('waveBars');
+    for (let i=0; i<80; i++) {
+      const b = document.createElement('div');
+      b.className = 'wave-bar';
+      b.style.height = (Math.random()*60+10)+'px';
+      b.style.animationDelay = (Math.random()*1.2)+'s';
+      b.style.opacity = (.3+Math.random()*.7).toString();
+      wb.appendChild(b);
+    }
+
+    // SMOOTH SCROLL
+    document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }));
+  </script>
+</body>
+</html>

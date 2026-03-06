@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enroll Now — Den Studios Academy</title>
+  <meta name="description" content="Apply to join Den Studios Academy's 13-week Audio Production course. Learn from industry professionals online." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --black:#080808;--deep:#0d0d0d;--card:#111111;--border:rgba(255,255,255,0.07);--gold:#c8a04a;--gold-light:#e8c06a;--gold-dim:rgba(200,160,74,0.15);--white:#f5f0e8;--gray:#888880;--success:#4a9c6a; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+    @media(hover:none){body{cursor:auto;}}
+
+    /* CURSOR */
+    .cursor,.cursor-ring{display:none;}
+    @media(hover:hover) and (pointer:fine){
+      .cursor{display:block;position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:difference;}
+      .cursor-ring{display:block;position:fixed;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,opacity .3s;opacity:.5;}
+    }
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4;}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:24px 48px;background:linear-gradient(to bottom,rgba(8,8,8,.97) 0%,transparent 100%);transition:all .4s;}
+    nav.scrolled{background:rgba(8,8,8,.96);backdrop-filter:blur(20px);padding:14px 48px;border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+    .nav-logo span{color:var(--gold);}
+    .logo-icon{width:30px;height:30px;background:var(--gold);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .logo-icon svg{width:16px;height:16px;}
+    .nav-links{display:flex;gap:32px;list-style:none;}
+    .nav-links a{color:var(--gray);text-decoration:none;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;transition:color .2s;font-family:'DM Mono',monospace;}
+    .nav-links a:hover{color:var(--white);}
+    .nav-links a.active{color:var(--gold);}
+    .nav-cta{background:var(--gold)!important;color:var(--black)!important;padding:9px 22px!important;border-radius:2px;font-weight:500!important;}
+    .nav-cta:hover{background:var(--gold-light)!important;}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none;}
+    .hamburger span{display:block;width:22px;height:1.5px;background:var(--white);transition:all .3s;}
+    .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+    .hamburger.open span:nth-child(2){opacity:0;}
+    .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+    .mobile-menu{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(8,8,8,.98);backdrop-filter:blur(20px);z-index:490;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);}
+    .mobile-menu.open{transform:translateX(0);}
+    .mobile-menu a{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:3px;color:var(--gray);text-decoration:none;transition:color .2s;padding:8px 0;}
+    .mobile-menu a:hover,.mobile-menu a.active{color:var(--gold);}
+    .mobile-menu .m-cta{margin-top:16px;background:var(--gold);color:var(--black)!important;font-size:18px!important;padding:16px 48px;border-radius:2px;}
+
+    /* PAGE HERO */
+    .page-hero{min-height:44vh;display:flex;flex-direction:column;justify-content:flex-end;padding:120px 48px 60px;position:relative;overflow:hidden;border-bottom:1px solid var(--border);}
+    .page-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 50% 70% at 20% 60%,rgba(200,160,74,.08) 0%,transparent 70%),radial-gradient(ellipse 40% 50% at 80% 30%,rgba(200,160,74,.04) 0%,transparent 60%),linear-gradient(180deg,#0a0a0a 0%,#080808 100%);}
+    .page-hero-inner{position:relative;z-index:2;}
+    .hero-breadcrumb{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+    .hero-breadcrumb a{color:var(--gray);text-decoration:none;transition:color .2s;}
+    .hero-breadcrumb a:hover{color:var(--gold);}
+    .hero-breadcrumb span{color:var(--gold);}
+    .page-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,110px);line-height:.95;letter-spacing:.5px;color:var(--white);}
+    .page-title .gold{color:var(--gold);}
+    .page-subtitle{margin-top:20px;font-size:16px;color:var(--gray);max-width:520px;line-height:1.75;}
+
+    /* SECTION */
+    .section-inner{max-width:1200px;margin:0 auto;padding:0 48px;}
+    .section-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+    .section-tag::before{content:'';width:28px;height:1px;background:var(--gold);}
+    .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,72px);line-height:1;letter-spacing:.5px;color:var(--white);margin-bottom:20px;}
+
+    /* REVEAL */
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+    .reveal-delay-1{transition-delay:.1s;}
+    .reveal-delay-2{transition-delay:.2s;}
+    .reveal-delay-3{transition-delay:.3s;}
+    .reveal-delay-4{transition-delay:.4s;}
+
+    /* MAIN CONTENT */
+    .enroll-main{padding:80px 0 120px;background:var(--black);}
+    .enroll-layout{display:grid;grid-template-columns:1fr 420px;gap:64px;align-items:start;}
+
+    /* FORM */
+    .form-wrap{background:var(--card);border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+    .form-header{background:linear-gradient(135deg,#161616,#111);padding:32px 36px;border-bottom:1px solid var(--border);}
+    .form-header h2{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:var(--white);margin-bottom:6px;}
+    .form-header p{font-size:13px;color:var(--gray);}
+    .form-body{padding:36px;}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    .form-group{margin-bottom:20px;}
+    .form-group label{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:8px;}
+    .form-group input,.form-group select,.form-group textarea{
+      width:100%;background:#0e0e0e;border:1px solid var(--border);border-radius:2px;
+      padding:14px 16px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;
+      font-weight:300;transition:border-color .2s,background .2s;outline:none;
+      -webkit-appearance:none;appearance:none;
+    }
+    .form-group input::placeholder,.form-group textarea::placeholder{color:rgba(136,136,128,.5);}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);background:#111;}
+    .form-group select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888880' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;}
+    .form-group select option{background:#111;color:var(--white);}
+    .form-group textarea{resize:vertical;min-height:100px;line-height:1.6;}
+    .form-divider{height:1px;background:var(--border);margin:24px 0;}
+    .form-check{display:flex;align-items:flex-start;gap:12px;margin-bottom:20px;}
+    .form-check input[type=checkbox]{width:16px;height:16px;flex-shrink:0;margin-top:2px;accent-color:var(--gold);cursor:pointer;}
+    .form-check label{font-size:13px;color:var(--gray);line-height:1.6;cursor:pointer;}
+    .form-check label a{color:var(--gold);text-decoration:none;}
+
+    .btn-submit{width:100%;background:var(--gold);color:var(--black);font-family:'DM Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:18px 36px;border-radius:2px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .25s;border:none;cursor:pointer;}
+    .btn-submit:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 12px 36px rgba(200,160,74,.3);}
+    .btn-submit svg{width:14px;height:14px;}
+    .btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
+
+    /* SUCCESS STATE */
+    .form-success{display:none;text-align:center;padding:60px 36px;}
+    .form-success.show{display:block;}
+    .form-body.hidden{display:none;}
+    .success-icon{width:64px;height:64px;background:rgba(74,156,106,.15);border:1px solid rgba(74,156,106,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;}
+    .success-icon svg{width:28px;height:28px;stroke:#4a9c6a;fill:none;}
+    .form-success h3{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:1px;color:var(--white);margin-bottom:12px;}
+    .form-success p{font-size:14px;color:var(--gray);line-height:1.75;}
+
+    /* SIDEBAR */
+    .sidebar{}
+    .info-card{background:var(--card);border:1px solid var(--border);padding:28px;border-radius:2px;margin-bottom:16px;}
+    .info-card h3{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--white);margin-bottom:16px;}
+    .info-item{display:flex;gap:14px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+    .info-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+    .info-icon{width:36px;height:36px;background:var(--gold-dim);border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .info-icon svg{width:16px;height:16px;stroke:var(--gold);fill:none;}
+    .info-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:3px;}
+    .info-val{font-size:14px;color:var(--white);}
+
+    .module-mini{padding:10px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+    .module-mini:last-child{border-bottom:none;}
+    .module-mini-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);min-width:22px;}
+    .module-mini-text{font-size:13px;color:rgba(245,240,232,.8);}
+
+    .contact-card{background:var(--gold-dim);border:1px solid rgba(200,160,74,.25);padding:24px;border-radius:2px;}
+    .contact-card h4{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--white);margin-bottom:12px;}
+    .contact-card p{font-size:13px;color:var(--gray);line-height:1.7;margin-bottom:16px;}
+    .contact-links{display:flex;flex-direction:column;gap:10px;}
+    .contact-link{display:flex;align-items:center;gap:10px;color:var(--gold);text-decoration:none;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;transition:opacity .2s;}
+    .contact-link:hover{opacity:.75;}
+    .contact-link svg{width:14px;height:14px;stroke:currentColor;fill:none;flex-shrink:0;}
+
+    /* FOOTER */
+    footer{background:#060606;border-top:1px solid var(--border);padding:60px 0 32px;}
+    .footer-inner{max-width:1200px;margin:0 auto;padding:0 48px;}
+    .footer-mini{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+    .footer-mini p{font-family:'DM Mono',monospace;font-size:11px;color:var(--gray);letter-spacing:1px;}
+    .footer-mini-links{display:flex;gap:24px;}
+    .footer-mini-links a{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--gray);text-decoration:none;transition:color .2s;}
+    .footer-mini-links a:hover{color:var(--white);}
+
+    /* RESPONSIVE */
+    @media(max-width:1024px){
+      nav{padding:20px 32px;}
+      nav.scrolled{padding:14px 32px;}
+      .section-inner{padding:0 32px;}
+      .page-hero{padding:100px 32px 52px;}
+      .footer-inner{padding:0 32px;}
+      .enroll-layout{grid-template-columns:1fr 360px;gap:40px;}
+    }
+    @media(max-width:768px){
+      nav{padding:18px 20px;}
+      nav.scrolled{padding:12px 20px;}
+      .nav-links{display:none;}
+      .hamburger{display:flex;}
+      .section-inner{padding:0 20px;}
+      .footer-inner{padding:0 20px;}
+      .page-hero{padding:88px 20px 44px;}
+      .enroll-layout{grid-template-columns:1fr;}
+      .form-row{grid-template-columns:1fr;}
+      .enroll-main{padding:56px 0 80px;}
+    }
+    @media(max-width:480px){
+      nav{padding:16px 16px;}
+      .section-inner{padding:0 16px;}
+      .footer-inner{padding:0 16px;}
+      .page-hero{padding:76px 16px 36px;}
+      .form-body{padding:24px 20px;}
+      .form-header{padding:24px 20px;}
+      .info-card{padding:20px;}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="index.html#course">Course</a>
+    <a href="index.html#instructors">Instructors</a>
+    <a href="contact.html">Contact</a>
+    <a href="enroll.html" class="m-cta active">Enroll Now</a>
+  </div>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="8" width="3" height="8" rx="1" fill="#080808"/><rect x="7" y="4" width="3" height="16" rx="1" fill="#080808"/><rect x="12" y="6" width="3" height="12" rx="1" fill="#080808"/><rect x="17" y="10" width="3" height="6" rx="1" fill="#080808"/></svg></div>
+      Den <span>Studios</span> Academy
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#course">Course</a></li>
+      <li><a href="index.html#instructors">Instructors</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="enroll.html" class="nav-cta active">Enroll Now</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-inner">
+      <div class="hero-breadcrumb reveal">
+        <a href="index.html">Home</a>
+        <span>›</span>
+        <span>Enroll Now</span>
+      </div>
+      <h1 class="page-title reveal reveal-delay-1">
+        Begin Your<br/><span class="gold">Journey</span>
+      </h1>
+      <p class="page-subtitle reveal reveal-delay-2">Fill out the application below and our team will reach out to confirm your enrollment in the 13-week Audio Production program.</p>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="enroll-main">
+    <div class="section-inner">
+      <div class="enroll-layout">
+
+        <!-- FORM -->
+        <div class="form-wrap reveal">
+          <div class="form-header">
+            <h2>Enrollment Application</h2>
+            <p>All fields marked with * are required. We'll be in touch within 24 hours.</p>
+          </div>
+          <div class="form-body" id="formBody">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fname">First Name *</label>
+                <input type="text" id="fname" placeholder="Your first name" required />
+              </div>
+              <div class="form-group">
+                <label for="lname">Last Name *</label>
+                <input type="text" id="lname" placeholder="Your last name" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" placeholder="your@email.com" required />
+            </div>
+            <div class="form-group">
+              <label for="phone">WhatsApp / Phone Number *</label>
+              <input type="tel" id="phone" placeholder="+91 00000 00000" required />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="country">Country *</label>
+                <select id="country" required>
+                  <option value="" disabled selected>Select country</option>
+                  <option>India</option>
+                  <option>United Arab Emirates</option>
+                  <option>United States</option>
+                  <option>United Kingdom</option>
+                  <option>Canada</option>
+                  <option>Australia</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" id="city" placeholder="Your city" />
+              </div>
+            </div>
+            <div class="form-divider"></div>
+            <div class="form-group">
+              <label for="experience">Your Experience Level *</label>
+              <select id="experience" required>
+                <option value="" disabled selected>Select your level</option>
+                <option>Complete Beginner — No experience yet</option>
+                <option>Hobbyist — Some self-taught knowledge</option>
+                <option>Intermediate — Comfortable with a DAW</option>
+                <option>Advanced — Looking to go professional</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="daw">DAW You Use (if any)</label>
+              <select id="daw">
+                <option value="" disabled selected>Select your DAW</option>
+                <option>Ableton Live</option>
+                <option>FL Studio</option>
+                <option>Logic Pro</option>
+                <option>Pro Tools</option>
+                <option>GarageBand</option>
+                <option>Studio One</option>
+                <option>I don't use one yet</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="goals">Your Goals *</label>
+              <textarea id="goals" placeholder="Tell us what you want to achieve — produce your own music, work in studios, release tracks professionally, etc." required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="hear">How Did You Hear About Us?</label>
+              <select id="hear">
+                <option value="" disabled selected>Select an option</option>
+                <option>Instagram</option>
+                <option>Facebook</option>
+                <option>Google Search</option>
+                <option>YouTube</option>
+                <option>Friend / Word of Mouth</option>
+                <option>WhatsApp</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-divider"></div>
+            <div class="form-check">
+              <input type="checkbox" id="agree" required />
+              <label for="agree">I confirm that the information provided is accurate and I agree to be contacted by Den Studios Academy regarding enrollment. <a href="contact.html">Privacy Policy</a></label>
+            </div>
+            <button class="btn-submit" id="submitBtn" onclick="handleSubmit()">
+              Submit Application
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+          <div class="form-success" id="formSuccess">
+            <div class="success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <h3>Application Received!</h3>
+            <p>Thank you for applying to Den Studios Academy. Our team will review your application and reach out within <strong style="color:var(--gold)">24 hours</strong> via email and WhatsApp to confirm your enrollment and next steps.</p>
+            <p style="margin-top:16px;">In the meantime, follow us on <a href="https://www.instagram.com/denmusicstudios/" style="color:var(--gold)">Instagram</a> or <a href="https://wa.me/919002563292" style="color:var(--gold)">WhatsApp us</a> directly.</p>
+          </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <div>
+          <div class="info-card reveal reveal-delay-1">
+            <h3>Course Details</h3>
+            <div class="info-item">
+              <div class="info-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+              <div><div class="info-label">Duration</div><div class="info-val">13 Weeks</div></div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+              <div><div class="info-label">Format</div><div class="info-val">Online — Live + Recorded</div></div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+              <div><div class="info-label">Instructors</div><div class="info-val">3 Industry Professionals</div></div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div><div class="info-label">Approach</div><div class="info-val">Project-Based Learning</div></div>
+            </div>
+          </div>
+
+          <div class="info-card reveal reveal-delay-2">
+            <h3>What's Covered</h3>
+            <div class="module-mini"><span class="module-mini-num">01</span><span class="module-mini-text">Music Production & Sound Design</span></div>
+            <div class="module-mini"><span class="module-mini-num">02</span><span class="module-mini-text">Drum Programming (Multi-Genre)</span></div>
+            <div class="module-mini"><span class="module-mini-num">03</span><span class="module-mini-text">Recording — Vocals & Instruments</span></div>
+            <div class="module-mini"><span class="module-mini-num">04</span><span class="module-mini-text">Mixing & Mastering for Streaming</span></div>
+            <div class="module-mini"><span class="module-mini-num">05</span><span class="module-mini-text">Professional Studio Workflow</span></div>
+          </div>
+
+          <div class="contact-card reveal reveal-delay-3">
+            <h4>Need Help Deciding?</h4>
+            <p>Have questions before applying? Reach out and we'll guide you through whether this course is right for you.</p>
+            <div class="contact-links">
+              <a href="https://wa.me/919002563292" class="contact-link" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                WhatsApp: +91 90025 63292
+              </a>
+              <a href="mailto:denstudiosacademy@gmail.com" class="contact-link">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                denstudiosacademy@gmail.com
+              </a>
+              <a href="contact.html" class="contact-link">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                Visit Contact Page
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-mini">
+        <p>© 2025 Den Studios Academy. All rights reserved.</p>
+        <div class="footer-mini-links">
+          <a href="index.html">Home</a>
+          <a href="index.html#course">Course</a>
+          <a href="contact.html">Contact</a>
+          <a href="https://www.instagram.com/denmusicstudios/" target="_blank">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // CURSOR
+    const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+    if(cursor&&ring){let mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();document.querySelectorAll('a,button,input,select,textarea').forEach(el=>{el.addEventListener('mouseenter',()=>{cursor.style.width='20px';cursor.style.height='20px';ring.style.width='56px';ring.style.height='56px';ring.style.opacity='.8';});el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='36px';ring.style.height='36px';ring.style.opacity='.5';});});}
+
+    // NAV
+    const nav=document.getElementById('navbar');
+    window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
+
+    // HAMBURGER
+    const ham=document.getElementById('hamburger'),mob=document.getElementById('mobileMenu');
+    ham.addEventListener('click',()=>{ham.classList.toggle('open');mob.classList.toggle('open');document.body.style.overflow=mob.classList.contains('open')?'hidden':'';});
+    mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('open');mob.classList.remove('open');document.body.style.overflow='';}));
+
+    // REVEAL
+    const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.1});
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+    window.addEventListener('load',()=>document.querySelectorAll('.page-hero .reveal').forEach((el,i)=>setTimeout(()=>el.classList.add('visible'),i*120)));
+
+    // FORM SUBMIT
+    function handleSubmit() {
+      const fname=document.getElementById('fname').value.trim();
+      const lname=document.getElementById('lname').value.trim();
+      const email=document.getElementById('email').value.trim();
+      const phone=document.getElementById('phone').value.trim();
+      const experience=document.getElementById('experience').value;
+      const goals=document.getElementById('goals').value.trim();
+      const agree=document.getElementById('agree').checked;
+
+      if(!fname||!lname||!email||!phone||!experience||!goals){
+        alert('Please fill in all required fields.'); return;
+      }
+      if(!email.includes('@')){alert('Please enter a valid email address.'); return;}
+      if(!agree){alert('Please agree to the terms to continue.'); return;}
+
+      const btn=document.getElementById('submitBtn');
+      btn.disabled=true;
+      btn.innerHTML='Submitting... <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>';
+
+      // Simulate form submission (replace with your backend/Formspree/EmailJS endpoint)
+      setTimeout(()=>{
+        document.getElementById('formBody').classList.add('hidden');
+        document.getElementById('formSuccess').classList.add('show');
+      }, 1200);
+    }
+  </script>
+</body>
+</html>
